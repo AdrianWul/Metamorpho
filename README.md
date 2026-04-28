@@ -2,6 +2,12 @@
 
 Transform your Figma designs into skeleton UI with one click!
 
+## Screenshots
+
+![Metamorpho Plugin Interface](images/metamorpho_01.png)
+
+![Skeleton UI Transformation](images/metamorpho_02.png)
+
 ## Features
 
 - **Text to Pills**: Converts all text elements into rounded skeleton pills
