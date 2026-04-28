@@ -1,0 +1,17 @@
+{
+  "name": "metamorpho",
+  "version": "1.0.0",
+  "description": "Figma plugin to transform elements into skeleton UI",
+  "main": "code.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "keywords": ["figma", "plugin", "skeleton", "ui", "loading"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.99.0",
+    "typescript": "^5.3.3"
+  }
+}

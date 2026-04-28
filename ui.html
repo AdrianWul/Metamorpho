@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+      padding: 24px 20px;
+      background: #e8ecf3;
+      color: #4a5568;
+    }
+
+    /* Simple Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 4px;
+      margin: 8px 0;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #718096;
+      border-radius: 4px;
+      transition: background 0.2s ease;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #5a67d8;
+    }
+
+    ::-webkit-scrollbar-thumb:active {
+      background: #4c51bf;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 100%;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 4px;
+      letter-spacing: -0.3px;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      color: #718096;
+      font-weight: 400;
+    }
+
+    /* Neumorphic Card */
+    .card {
+      background: #e8ecf3;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow:
+        8px 8px 16px rgba(163, 177, 198, 0.6),
+        -8px -8px 16px rgba(255, 255, 255, 0.9);
+    }
+
+    /* Section Title */
+    .section-title {
+      font-size: 10px;
+      font-weight: 600;
+      color: #718096;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    /* Input Fields */
+    .input-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .input-group {
+      flex: 1;
+      position: relative;
+    }
+
+    .input-label {
+      font-size: 9px;
+      color: #718096;
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Toggle Switch */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      background: #e8ecf3;
+      border-radius: 10px;
+      box-shadow:
+        inset 3px 3px 6px rgba(163, 177, 198, 0.3),
+        inset -3px -3px 6px rgba(255, 255, 255, 0.7);
+    }
+
+    .toggle-label {
+      font-size: 10px;
+      color: #4a5568;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #e8ecf3;
+      border-radius: 24px;
+      transition: 0.3s;
+      box-shadow:
+        inset 3px 3px 6px rgba(163, 177, 198, 0.4),
+        inset -3px -3px 6px rgba(255, 255, 255, 0.8);
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background: #e8ecf3;
+      border-radius: 50%;
+      transition: 0.3s;
+      box-shadow:
+        3px 3px 6px rgba(163, 177, 198, 0.5),
+        -3px -3px 6px rgba(255, 255, 255, 0.9);
+    }
+
+    input:checked + .toggle-slider {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      box-shadow:
+        inset 2px 2px 4px rgba(0, 0, 0, 0.2),
+        inset -2px -2px 4px rgba(255, 255, 255, 0.1);
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(20px);
+      box-shadow:
+        2px 2px 4px rgba(0, 0, 0, 0.2),
+        -2px -2px 4px rgba(255, 255, 255, 0.1);
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 12px;
+      background: #e8ecf3;
+      color: #2d3748;
+      box-shadow:
+        inset 4px 4px 8px rgba(163, 177, 198, 0.5),
+        inset -4px -4px 8px rgba(255, 255, 255, 0.9);
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    input::placeholder {
+      color: #a0aec0;
+    }
+
+    input:focus {
+      outline: none;
+      box-shadow:
+        inset 2px 2px 6px rgba(163, 177, 198, 0.4),
+        inset -2px -2px 6px rgba(255, 255, 255, 0.8);
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 11px 16px;
+      border: none;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #e8ecf3;
+      color: #4a5568;
+      position: relative;
+    }
+
+    .btn-primary {
+      box-shadow:
+        6px 6px 12px rgba(163, 177, 198, 0.6),
+        -6px -6px 12px rgba(255, 255, 255, 0.9);
+      color: #5a67d8;
+    }
+
+    .btn-primary:hover {
+      box-shadow:
+        4px 4px 8px rgba(163, 177, 198, 0.5),
+        -4px -4px 8px rgba(255, 255, 255, 0.8);
+    }
+
+    .btn-primary:active {
+      box-shadow:
+        inset 3px 3px 6px rgba(163, 177, 198, 0.5),
+        inset -3px -3px 6px rgba(255, 255, 255, 0.8);
+    }
+
+    .btn-secondary {
+      box-shadow:
+        4px 4px 8px rgba(163, 177, 198, 0.5),
+        -4px -4px 8px rgba(255, 255, 255, 0.8);
+      font-size: 11px;
+      padding: 9px 12px;
+    }
+
+    .btn-secondary:hover {
+      box-shadow:
+        3px 3px 6px rgba(163, 177, 198, 0.4),
+        -3px -3px 6px rgba(255, 255, 255, 0.7);
+    }
+
+    .btn-secondary:active {
+      box-shadow:
+        inset 2px 2px 4px rgba(163, 177, 198, 0.4),
+        inset -2px -2px 4px rgba(255, 255, 255, 0.7);
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .btn-row .btn {
+      flex: 1;
+    }
+
+    .btn-secondary {
+      margin-bottom: 10px;
+    }
+
+    .btn-secondary:last-child {
+      margin-bottom: 0;
+    }
+
+    .icon {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #cbd5e0, transparent);
+      margin: 4px 0;
+      opacity: 0.5;
+    }
+
+    /* Status */
+    #status {
+      font-size: 10px;
+      color: #718096;
+      text-align: center;
+      padding: 10px;
+      background: #e8ecf3;
+      border-radius: 10px;
+      min-height: 32px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      box-shadow:
+        inset 3px 3px 6px rgba(163, 177, 198, 0.3),
+        inset -3px -3px 6px rgba(255, 255, 255, 0.7);
+    }
+
+    #status:not(:empty) {
+      display: flex;
+    }
+
+    /* Tooltips */
+    .tooltip {
+      position: relative;
+    }
+
+    .tooltip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: #2d3748;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 10px;
+      line-height: 1.4;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      z-index: 1000;
+      font-weight: 500;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      white-space: normal;
+      max-width: 200px;
+      text-align: center;
+    }
+
+    .tooltip::before {
+      content: '';
+      position: absolute;
+      bottom: calc(100% + 4px);
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #2d3748;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      z-index: 1000;
+    }
+
+    .tooltip:hover::after {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .tooltip:hover::before {
+      opacity: 1;
+    }
+
+    /* Input tooltips appear below */
+    .input-group.tooltip::after {
+      bottom: auto;
+      top: calc(100% + 10px);
+      transform: translateX(-50%) translateY(-4px);
+    }
+
+    .input-group.tooltip::before {
+      bottom: auto;
+      top: calc(100% + 4px);
+      border-top-color: transparent;
+      border-bottom-color: #2d3748;
+    }
+
+    .input-group.tooltip:hover::after {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      animation: fadeInUp 0.5s ease;
+    }
+
+    .card:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+
+    .card:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h2>Metamorpho <span style="font-size: 14px; font-weight: 400; color: #a0aec0;">v1.2</span></h2>
+      <p style="font-size: 9px; color: #a0aec0; margin-top: 2px; margin-bottom: 8px;">Created by Adrian Wulfrath</p>
+      <p class="subtitle">Transform designs into skeleton UI</p>
+    </div>
+
+    <!-- Skeleton Transform Section -->
+    <div class="card">
+      <div class="section-title">Skeleton Transform</div>
+
+      <div class="input-row">
+        <div class="input-group tooltip" data-tooltip="Adjust pill height by percentage (e.g., -10 for smaller, +20 for larger)">
+          <label class="input-label">Pill Height %</label>
+          <input type="number" id="height-adjust" placeholder="0">
+        </div>
+        <div class="input-group tooltip" data-tooltip="Custom hex color for text pills (leave empty for original color)">
+          <label class="input-label">Pill Color</label>
+          <input type="text" id="pill-color" placeholder="#CCCCCC">
+        </div>
+      </div>
+
+      <div class="toggle-row tooltip" data-tooltip="Create skeleton on top of original (ON) or to the side (OFF)">
+        <span class="toggle-label">Create on Top</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="create-on-top">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="toggle-row tooltip" data-tooltip="Create multiple random pills per line (ON) or single pill per line (OFF)">
+        <span class="toggle-label">Multiple Pills</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="multiple-pills">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <button class="btn btn-primary tooltip" id="transform-btn" data-tooltip="Convert selection to flat skeleton UI with pills and shapes">
+        <span class="icon">✨</span>
+        Transform to Skeleton
+      </button>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Utility Actions -->
+    <div class="card">
+      <div class="section-title">Utility Actions</div>
+
+      <div class="btn-row">
+        <button class="btn btn-secondary tooltip" id="copy-btn" data-tooltip="Copy elements with their positions">
+          <span class="icon">📋</span>
+          Copy
+        </button>
+        <button class="btn btn-secondary tooltip" id="paste-btn" data-tooltip="Paste into selected frame">
+          <span class="icon">📌</span>
+          Paste
+        </button>
+      </div>
+
+      <button class="btn btn-secondary tooltip" id="flatten-btn" data-tooltip="Flatten and merge selected shapes into single vector">
+        <span class="icon">🔲</span>
+        Flatten & Merge
+      </button>
+
+      <button class="btn btn-secondary tooltip" id="frame-to-shape-btn" data-tooltip="Convert any element (frame, instance, component, etc.) to shape maintaining all visual properties and exact position">
+        <span class="icon">🔷</span>
+        Convert to Shape
+      </button>
+
+      <button class="btn btn-secondary tooltip" id="group-color-btn" data-tooltip="Group elements by fill color with hex names">
+        <span class="icon">🎨</span>
+        Group by Color
+      </button>
+    </div>
+
+    <div id="status"></div>
+  </div>
+
+  <script>
+    document.getElementById('transform-btn').onclick = () => {
+      const heightAdjust = document.getElementById('height-adjust').value;
+      const pillColorRaw = document.getElementById('pill-color').value;
+      const createOnTop = document.getElementById('create-on-top').checked;
+      const multiplePills = document.getElementById('multiple-pills').checked;
+
+      // Trim and validate pill color
+      const pillColor = pillColorRaw ? pillColorRaw.trim() : null;
+
+      parent.postMessage({
+        pluginMessage: {
+          type: 'transform-to-skeleton',
+          heightAdjust: heightAdjust ? parseFloat(heightAdjust) : 0,
+          pillColor: pillColor && pillColor.length > 0 ? pillColor : null,
+          createOnTop: createOnTop,
+          multiplePills: multiplePills
+        }
+      }, '*');
+    };
+
+    document.getElementById('copy-btn').onclick = () => {
+      parent.postMessage({
+        pluginMessage: { type: 'copy-selection' }
+      }, '*');
+    };
+
+    document.getElementById('paste-btn').onclick = () => {
+      parent.postMessage({
+        pluginMessage: { type: 'paste-selection' }
+      }, '*');
+    };
+
+    document.getElementById('flatten-btn').onclick = () => {
+      parent.postMessage({
+        pluginMessage: { type: 'flatten-merge' }
+      }, '*');
+    };
+
+    document.getElementById('frame-to-shape-btn').onclick = () => {
+      parent.postMessage({
+        pluginMessage: { type: 'frame-to-shape' }
+      }, '*');
+    };
+
+    document.getElementById('group-color-btn').onclick = () => {
+      parent.postMessage({
+        pluginMessage: { type: 'group-by-color' }
+      }, '*');
+    };
+
+    // Listen for status updates
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+      if (msg && msg.type === 'update-status') {
+        document.getElementById('status').textContent = msg.text;
+      }
+    };
+  </script>
+</body>
+</html>
